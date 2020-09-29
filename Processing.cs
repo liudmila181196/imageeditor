@@ -423,6 +423,26 @@ namespace Nazarova
             return newIm;
         }
 
+        public Bitmap corrCDF(Image image)
+        {
+            Analysis analysis = new Analysis();
+            PointPairList list = analysis.imgCDF(image);
+            Bitmap im = new Bitmap(image);
+            Bitmap newIm = new Bitmap(image.Width, image.Height);
+
+            for (int i = 0; i < image.Width; i++)
+            {
+                for (int j = 0; j < image.Height; j++)
+                {
+                    Color p = im.GetPixel(i, j);
+                    int x = (int)p.R;
+                    double y = list.ElementAt(x).Y;
+                    x = (int)(255.0 * y);
+                    newIm.SetPixel(i, j, Color.FromArgb(x, x, x));
+                }
+            }
+            return newIm;
+        }
 
         public PointPairList derivative(PointPairList list, double h)
         {

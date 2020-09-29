@@ -26,48 +26,48 @@ namespace Nazarova
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             /*
-                        Model model = new Model();
-                        RdWr rdwr = new RdWr();
-                        Analysis analysis = new Analysis();
-                        Processing proc = new Processing();
-                        Dictionary<PointPairList, String> list = new Dictionary<PointPairList, string>();
+            Model model = new Model();
+            RdWr rdwr = new RdWr();
+            Analysis analysis = new Analysis();
+            Processing proc = new Processing();
+            Dictionary<PointPairList, String> list = new Dictionary<PointPairList, string>();
 
-                        list = Program.trend(model);
-                        list = Program.trendNorm(model, rdwr);
-                        list = Program.random(model);
-                        list = Program.stat(model);
-                        Application.Run(new RdWr(list, 0.005));
-                        list = Program.addMulti(model);
-                        list = Program.multiChannel(model);*//*
-                        list = Program.histogram(model);
-                        list = Program.correlation(model);
-                        list = Program.sinDiffFreq(model);
-                        list = Program.specter(model);
-                        list = Program.sum3sin(model);
-                        list = Program.delAndAnti(model);
-                        list = Program.shiftSin(model);
-                        list = Program.trendSin(model);
-                        list = Program.randAndSpikeSpecter(model);
-                        String name = "E:\\data.dat";
-                        PointPairList listFile = rdwr.readFile(name);
-                        list = Program.procFile(listFile);
-                        Dictionary<PointPairList, String> list1 = Program.getComplex(model);
-                        Dictionary<PointPairList, String> list2 = Program.specZero(model);
-                        Application.Run(new RdWr(list1));
-                        Application.Run(new RdWr(list2));
+            list = Program.trend(model);
+            list = Program.trendNorm(model, rdwr);
+            list = Program.random(model);
+            list = Program.stat(model);
+            Application.Run(new RdWr(list, 0.005));
+            list = Program.addMulti(model);
+            list = Program.multiChannel(model);*//*
+            list = Program.histogram(model);
+            list = Program.correlation(model);
+            list = Program.sinDiffFreq(model);
+            list = Program.specter(model);
+            list = Program.sum3sin(model);
+            list = Program.delAndAnti(model);
+            list = Program.shiftSin(model);
+            list = Program.trendSin(model);
+            list = Program.randAndSpikeSpecter(model);
+            String name = "E:\\data.dat";
+            PointPairList listFile = rdwr.readFile(name);
+            list = Program.procFile(listFile);
+            Dictionary<PointPairList, String> list1 = Program.getComplex(model);
+            Dictionary<PointPairList, String> list2 = Program.specZero(model);
+            Application.Run(new RdWr(list1));
+            Application.Run(new RdWr(list2));
 
-                        Dictionary<PointPairList, String> list1 = Program.cardio(model);
-                        Dictionary<PointPairList, String> list1 = Program.cardio2(model);
-                        String name = "E:\\data.dat";
-                        PointPairList listFile = rdwr.readFile(name);
-                        //Dictionary<PointPairList, String> list1 = Program.filter(model, analysis, proc, listFile);
-                        Dictionary<PointPairList, String> list1 = Program.filterS(model, analysis, proc, listFile);
-                        Dictionary<PointPairList, String> list1 = Program.wav(model, analysis, proc);
-                        Dictionary<PointPairList, String> list1 = Program.wavMy(model, analysis, proc);
-                        String name = "E:\\v1z1.dat";
-                        PointPairList listFile = rdwr.readFile(name);
-                        Dictionary<PointPairList, String> list1 = Program.zachet(model, analysis, proc, listFile);
-                        Application.Run(new RdWr(list1));*/
+            Dictionary<PointPairList, String> list1 = Program.cardio(model);
+            Dictionary<PointPairList, String> list1 = Program.cardio2(model);
+            String name = "E:\\data.dat";
+            PointPairList listFile = rdwr.readFile(name);
+            //Dictionary<PointPairList, String> list1 = Program.filter(model, analysis, proc, listFile);
+            Dictionary<PointPairList, String> list1 = Program.filterS(model, analysis, proc, listFile);
+            Dictionary<PointPairList, String> list1 = Program.wav(model, analysis, proc);
+            Dictionary<PointPairList, String> list1 = Program.wavMy(model, analysis, proc);
+            String name = "E:\\v1z1.dat";
+            PointPairList listFile = rdwr.readFile(name);
+            Dictionary<PointPairList, String> list1 = Program.zachet(model, analysis, proc, listFile);
+            Application.Run(new RdWr(list1));*/
 
             //Dictionary<PointPairList, String> list1 = Program.furieObr(model, analysis, proc);
             //Application.Run(new RdWr(list1));
