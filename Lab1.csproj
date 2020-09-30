@@ -102,6 +102,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RdWr.resx">
+      <DependentUpon>RdWr.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RdWrImage.resx">
       <DependentUpon>RdWrImage.cs</DependentUpon>
     </EmbeddedResource>

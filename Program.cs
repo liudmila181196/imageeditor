@@ -103,6 +103,14 @@ namespace Nazarova
             Application.Run(new ImageEdior());
         }
 
+        /*public static Dictionary<PointPairList, String> showHistogram(Analysis analysis, Processing proc, Image im)
+        {
+            Dictionary<PointPairList, String> list = new Dictionary<PointPairList, String>();
+            PointPairList histo = analysis.imgHistogram(im);
+            list.Add(histo, "Histogram");
+            return list;
+        }*/
+
         public static Bitmap stones(Processing proc, Analysis analysis, RdWr rdwr, Model model)
         {
             
