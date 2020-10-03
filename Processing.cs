@@ -18,7 +18,7 @@ namespace Nazarova
         {
 
         }
-
+        //Удаление сдвига в данных
         public PointPairList deleteShift(PointPairList list)
         {
             PointPairList listNew = new PointPairList();
@@ -31,7 +31,7 @@ namespace Nazarova
             }
             return listNew;
         }
-
+        //Удаление выбросов в данных (пиков), min - минимальное значение в данных, max - максимальное
         public PointPairList antiSpike(PointPairList list, double min, double max)
         {
             PointPairList listNew = new PointPairList();
@@ -53,7 +53,7 @@ namespace Nazarova
             }
             return listNew;
         }
-
+        //Удаление тренда в данных, L - количество частей, на которые делим данные
         public PointPairList antiTrend(PointPairList list, int L)
         {
             PointPairList listNew = new PointPairList();
@@ -83,7 +83,7 @@ namespace Nazarova
             return listNew;
         }
 
-        //Фильтр Низких Частот
+        //Фильтр Низких Частот, m - крутизна сглаживания, dt - шаг, fc - частота
         public PointPairList lpf(int m, double dt, double fc)
         {
             PointPairList lpw = new PointPairList();
@@ -126,7 +126,7 @@ namespace Nazarova
             return lpw3;
         }
 
-        //Фильтр Высоких Частот
+        //Фильтр Высоких Частот, m - крутизна сглаживания, dt - шаг, fc - частота
         public PointPairList hpf(int m, double dt, double fc)
         {
             PointPairList lpw = lpf(m, dt, fc);
@@ -140,7 +140,7 @@ namespace Nazarova
 
             return hpw;
         }
-        //Полосовой фильтр
+        //Полосовой фильтр, m - крутизна сглаживания, dt - шаг, fc - частота
         public PointPairList bpf(int m, double dt, double fc1, double fc2)
         {
             PointPairList lpw1 = lpf(m, dt, fc1);
@@ -155,7 +155,7 @@ namespace Nazarova
             return bpw;
         }
 
-        //Режекторный фильтр
+        //Режекторный фильтр, m - крутизна сглаживания, dt - шаг, fc - частота
         public PointPairList bsf(int m, double dt, double fc1, double fc2)
         {
             if (fc1 > fc2)
@@ -176,7 +176,7 @@ namespace Nazarova
 
             return bsw;
         }
-
+        //Метод блиайшего соседа, image - исх. изображение, kW - коэф. растяжения/сжатия по ширине, kH - по высоте
         public Bitmap nearestNeighbors(Image image, double kW, double kH)
         {
             int w = (int)(image.Width * kW), h = (int)(image.Height * kH);
@@ -194,23 +194,8 @@ namespace Nazarova
 
             return imageNew;
         }
-        public Bitmap nearestNeighbors(Image image, int neww, int newh)
-        {
-           
-            Bitmap im = new Bitmap(image);
-            Bitmap imageNew = new Bitmap(neww, newh);
-            double kW = neww / (double)image.Width, kH = newh / (double)image.Height;
-            for (double x = 0; x < neww; x++)
-            {
-                for (double y = 0; y < newh; y++)
-                {
-                    Color pixelColor = im.GetPixel((int)(x / kW), (int)(y / kH));
-                    imageNew.SetPixel((int)x, (int)y, pixelColor);
-                }
-            }
 
-            return imageNew;
-        }
+        //билинейная интерполяция, kW - коэф. растяжения/сжатия по ширине, kH - по высоте
         public Bitmap bilinearInterp(Image image, double kW, double kH)
         {
             float tmp;
@@ -246,49 +231,15 @@ namespace Nazarova
             }
             return imageNew;
         }
-        public Bitmap bilinearInterp(Image image, int neww, int newh)
-        {
-            float tmp;
-            int red, green, blue, h, w;
-            Bitmap im = new Bitmap(image);
-            Bitmap imageNew = new Bitmap(neww, newh);
 
-            for (int j = 0; j < newh; j++)
-            {
-                tmp = (float)j / (float)(newh - 1) * (image.Height - 1);
-                h = (int)Math.Floor(tmp);
-                if (h < 0) h = 0;
-                else if (h >= image.Height - 1) h = image.Height - 2;
-
-                for (int i = 0; i < neww; i++)
-                {
-                    tmp = (float)(i) / (float)(neww - 1) * (image.Width - 1);
-                    w = (int)Math.Floor(tmp);
-                    if (w < 0) w = 0;
-                    else if (w >= image.Width - 1) w = image.Width - 2;
-
-                    Color pix1 = im.GetPixel(w, h);
-                    Color pix2 = im.GetPixel(w, h + 1);
-                    Color pix3 = im.GetPixel(w + 1, h + 1);
-                    Color pix4 = im.GetPixel(w + 1, h);
-
-                    blue = ((int)pix1.B + (int)pix2.B + (int)pix3.B + (int)pix4.B) / 4;
-                    green = (((int)pix1.G + (int)pix2.G + (int)pix3.G + (int)pix4.G) / 4);
-                    red = (((int)pix1.R + (int)pix2.R + (int)pix3.R + (int)pix4.R) / 4);
-
-                    Color newPix = Color.FromArgb(red, green, blue);
-                    imageNew.SetPixel(i, j, newPix);
-                }
-            }
-            return imageNew;
-        }
+        
         public int calcGrayScale(double f, double min, double max)
         {
             double g = (f - min) / (max - min)*255.0;
             //if (g < 0) g = 0;
             return (int) g;
         }
-
+        //Приведение к шкале серости (после преобразований возможны выходы за пределы 0-255)
         public PointPairList[] grayScale(PointPairList[] list, int h, int w)
         {
             PointPairList[] listNew = new PointPairList[h];
@@ -316,7 +267,7 @@ namespace Nazarova
             }
             return listNew;
         }
-
+        //Нахождение мин и макс значений для каждой составляющей на изображении
         private int[] minmaxARGB(Bitmap bmp)
         {
             int XminR = 0;
@@ -348,7 +299,7 @@ namespace Nazarova
             int[] a = { XminR, XmaxR, XminG,XmaxG, XminB, XmaxB, XminA,XmaxA  };
             return a;
         }
-
+        //Негатив
         public Bitmap negative(Image image)
         {
             Bitmap im = new Bitmap(image);
@@ -365,7 +316,7 @@ namespace Nazarova
 
             return imNew;
         }
-
+        //Логарифмическое преобразование
         public Bitmap logarifm(Image image, double C)
         {
             Bitmap im = new Bitmap(image);
@@ -381,7 +332,7 @@ namespace Nazarova
 
             return im;
         }
-
+        //гамма-коррекция
         public Bitmap gamma(Image image, double C, double gamma)
         {
             Bitmap im = new Bitmap(image);
@@ -403,7 +354,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //коррекция с помощью функции накопления CDF (эквалайзер)
         public Bitmap corrCDF(Image image, PointPairList list)
         {
             Bitmap im = new Bitmap(image);
@@ -422,7 +373,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //коррекция с помощью функции накопления CDF (эквалайзер)
         public Bitmap corrCDF(Image image)
         {
             Analysis analysis = new Analysis();
@@ -443,7 +394,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //вычисление производной
         public PointPairList derivative(PointPairList list, double h)
         {
             PointPairList listD = new PointPairList();
@@ -453,7 +404,7 @@ namespace Nazarova
             }
             return listD;
         }
-
+        //Перевод изображения в PointPairList
         public PointPairList[] imageToList (Image image)
         {
             Bitmap img = new Bitmap(image);
@@ -471,7 +422,7 @@ namespace Nazarova
             }
             return imgList;
         }
-
+        //Перевод  PointPairList в изображение
         public Bitmap listToImage (PointPairList[] list, int height, int width)
         {
             Bitmap img =new Bitmap(width, height);
@@ -486,7 +437,7 @@ namespace Nazarova
             }
             return img;
         }
-
+        //Генерация нормального Гауссовского шума с заданным  PointPairList(исходное изображение), с размерами изображения, и процентом p шума
         public PointPairList[] normalNoise(PointPairList[] img, int w, int h, double p)
         {
             int N = w * h;
@@ -502,7 +453,7 @@ namespace Nazarova
             }
             return img;
         }
-        
+        //Генерация шума Соль и перец с заданным  PointPairList(исходное изображение), с размерами изображения, и процентом p шума
         public PointPairList[] saltPepperNoise(PointPairList[] img, int w, int h, double p)
         {
             int N = w * h;
@@ -521,7 +472,7 @@ namespace Nazarova
             }
             return img;
         }
-
+        //Генерация суммарного шума (нормального Гауссовского и Соль и перец шума) с заданным  PointPairList(исходное изображение), с размерами изображения, и процентом p шума
         public PointPairList[] summaryNoise(PointPairList[] img, int w, int h, double p)
         {
             int N = w * h;
@@ -549,7 +500,7 @@ namespace Nazarova
             return img;
         }
 
-        //усреднящий m=0, медианный m=1
+        //Фильтры для устранения шума: усреднящий m=0, медианный m=1, k-размер окна
         public Bitmap MMFilter(Image image, int k, int m)
         {
             Bitmap im = new Bitmap(image);
@@ -573,7 +524,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //Нахождение элементов маски размером n*n на изображении в координатах (i, j) и сохранение их в виде одномерного массива PointPairList
         private PointPairList window(Bitmap im, int n, int i, int j)
         {
             PointPairList a = new PointPairList();
@@ -588,7 +539,7 @@ namespace Nazarova
             }
             return a;
         }
-
+        //Нахождение элементов маски размером n*n на изображении в координатах (i, j) и сохранение их в виде двумерного массива PointPairList
         private PointPairList[] window2(Bitmap im, int n, int i, int j)
         {
             PointPairList[] a = new PointPairList[2*n];
@@ -608,7 +559,7 @@ namespace Nazarova
             }
             return a;
         }
-
+        //Пороговое преобразование исходного изображения с порогом Т0 в изображение со значениями пикселей 0 и 255
         public Bitmap globalThresholdConversion(Image image, double T0)
         {
             Bitmap im = new Bitmap(image);
@@ -644,7 +595,7 @@ namespace Nazarova
 
             return newIm;
         }
-
+        //Пороговое преобразование исходного изображения с порогом Т0 в изображение со значениями пикселей min и max
         public Bitmap globalThresholdConversion(Image image, double T0, int min, int max)
         {
             Bitmap im = new Bitmap(image);
@@ -660,7 +611,7 @@ namespace Nazarova
 
             return newIm;
         }
-
+        //Обратное отображение PointPairList 
         public PointPairList[] rotateList (PointPairList[] list, int h, int w)
         {
             PointPairList[] newList = new PointPairList[w];
@@ -677,7 +628,7 @@ namespace Nazarova
             }
             return newList;
         }
-
+        //Вычитание PointPairList 
         public PointPairList[] subtractionList (PointPairList[] list1, PointPairList[] list2, int h, int w)
         {
             for (int i=0; i<h; i++)
@@ -690,6 +641,7 @@ namespace Nazarova
 
             return list1;
         }
+        //Абсолютное вычитание PointPairList (модуль)
         public PointPairList[] subtractionDiffList(PointPairList[] list1, PointPairList[] list2, int h1, int w1, int h2, int w2)
         {
             for (int i = (h1-h2)/2; i < h2; i++)
@@ -702,6 +654,7 @@ namespace Nazarova
 
             return list1;
         }
+        //нахождение макс пикселя на изображении (цвета R)
         public int maxPixel(Bitmap im)
         {
             int max = 0;
@@ -714,7 +667,7 @@ namespace Nazarova
             }
             return max;
         }
-
+        //Лапласиан, k-размер маски, t - порог
         public Bitmap laplasian(Image image, int k, double t)
         {
             Bitmap im = new Bitmap(image);
@@ -733,8 +686,8 @@ namespace Nazarova
             }
             return newIm;
         }
-
-        public PointPairList[] gradient(Image image, int k)
+        //Градиент или оператор Собела, k-размер маски
+        /*public PointPairList[] gradient(Image image, int k)
         {
             Bitmap im = new Bitmap(image);
             PointPairList[] newIm = imageToList(im);
@@ -751,8 +704,28 @@ namespace Nazarova
             }
 
             return newIm;
-        }
+        }*/
+        //Градиент или оператор Собела, k-размер маски
+        public Bitmap gradient(Image image, int k)
+        {
+            Bitmap im = new Bitmap(image);
+            PointPairList[] newImList = imageToList(im);
 
+            int n = (int)(k - 1) / 2;
+            for (int i = n; i < image.Width - n; i++)
+            {
+                for (int j = n; j < image.Height - n; j++)
+                {
+                    PointPairList a = window(im, n, i, j);
+                    int sum = Math.Abs(sobelX(a)) + Math.Abs(sobelY(a));
+                    newImList[j].ElementAt(i).Y = sum;
+                }
+            }
+            newImList = grayScale(newImList, im.Height, im.Width);
+            Bitmap newIm= listToImage(newImList, im.Height, im.Width);
+            return newIm;
+        }
+        
         public int sobelX(PointPairList a)
         {
             int x = (int)(a.ElementAt(6).X + 2 * a.ElementAt(7).X + a.ElementAt(8).X - (a.ElementAt(0).X + 2 * a.ElementAt(1).X + a.ElementAt(2).X));
@@ -763,7 +736,7 @@ namespace Nazarova
             int x = (int)(a.ElementAt(2).X + 2 * a.ElementAt(5).X + a.ElementAt(8).X - (a.ElementAt(0).X + 2 * a.ElementAt(3).X + a.ElementAt(6).X));
             return x;
         }
-
+        //Дилатация изображения с заданным примитивом (маской) размера k
         public Bitmap dilatation(Image image, int[] primitive, int k)
         {
             Bitmap im = new Bitmap(image);
@@ -793,7 +766,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //Эрозия изображения с заданным примитивом (маской) размера k
         public Bitmap erosion(Image image, int[] primitive, int k)
         {
             Bitmap im = new Bitmap(image);
@@ -814,7 +787,7 @@ namespace Nazarova
             }
             return newIm;
         }
-
+        //Дилатация изображения с заданным примитивом (маской) размера k
         public Bitmap erosion2(Image image, PointPairList[] primitive, int k, int vol, double percentIn, double percentOut)
         {
             Bitmap im = new Bitmap(image);
@@ -914,7 +887,7 @@ namespace Nazarova
             Bitmap image = listToImage(imDilList, im.Height, im.Width);
             return image;
         }
-
+        //Вычитание из изображения маски
         public Bitmap substractImAndMask(Image im, Image mask)
         {
             Bitmap bim = new Bitmap(im);
@@ -928,7 +901,7 @@ namespace Nazarova
             }
             return bim;
         }
-
+        //Нахождение кол-ва камней на изображении размером k
         public Bitmap numberOfStones (Image image, PointPairList[] primitive, int k, int vol)
         {
             Bitmap im = new Bitmap(image);

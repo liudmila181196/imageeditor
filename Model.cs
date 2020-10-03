@@ -12,6 +12,7 @@ using System.Linq;
 
 namespace Nazarova
 {
+    //ѕостроение различных модельных данных
 	public partial class Model : Form
 	{
 		public Model ()
@@ -225,6 +226,7 @@ namespace Nazarova
         {
             return a * Math.Sin(2 * Math.PI * f * k * t);
         }  
+
         public PointPairList buildSin(double a, double t, double f, int N)
         {
             PointPairList list = new PointPairList();
@@ -246,7 +248,7 @@ namespace Nazarova
             }
             return list;
         }
-
+        //—вертка
         public PointPairList convolution(PointPairList list1, PointPairList list2)
         {
             PointPairList list = new PointPairList();
@@ -269,8 +271,8 @@ namespace Nazarova
             return list;
         }
 
-
-    public PointPairList cropList (PointPairList list, int start, int end)
+        //¬ырезаем из листа элементов с индекса start по end
+        public PointPairList cropList (PointPairList list, int start, int end)
         {
             PointPairList listNew= new PointPairList();
             for (int i=start; i<end; i++)
@@ -279,8 +281,8 @@ namespace Nazarova
             }
             return listNew;
         }
-
-    public PointPairList stickList(Dictionary<int, PointPairList> list)
+        //—ли€ние нескольких листов в один
+        public PointPairList stickList(Dictionary<int, PointPairList> list)
         {
             PointPairList listNew = new PointPairList();
             PointPairList list0 = new PointPairList();
@@ -296,25 +298,24 @@ namespace Nazarova
             }
             return listNew;
         }
-    
 
-    public PointPairList[] roundMask(int diameter, int frame, int volTrue, int volFalse)
-    {
-        frame=frame*2;
-        PointPairList[] round = new PointPairList[diameter+frame];
-
-        for (int i = 0; i < diameter + frame; i++)
+        //—оздание круглой маски с заданным диаметром состо€щей из значений volTrue, в квадрате состо€щего из значений volFalse
+        public PointPairList[] roundMask(int diameter, int frame, int volTrue, int volFalse)
         {
-            round[i] = new PointPairList();
-            for (int j = 0; j < diameter + frame; j++)
-            { 
-                int x = (int)Math.Sqrt(Math.Pow(i - (diameter +frame)/ 2, 2) + Math.Pow(j - (diameter + frame) / 2, 2));
-                if (x < diameter / 2) round[i].Add(j, volTrue);
-                else round[i].Add(j, volFalse);
+            frame=frame*2;
+            PointPairList[] round = new PointPairList[diameter+frame];
+
+            for (int i = 0; i < diameter + frame; i++)
+            {
+                round[i] = new PointPairList();
+                for (int j = 0; j < diameter + frame; j++)
+                { 
+                    int x = (int)Math.Sqrt(Math.Pow(i - (diameter +frame)/ 2, 2) + Math.Pow(j - (diameter + frame) / 2, 2));
+                    if (x < diameter / 2) round[i].Add(j, volTrue);
+                    else round[i].Add(j, volFalse);
+                }
             }
-        }
-        return round;
-    
+            return round;
         }
     }
 }

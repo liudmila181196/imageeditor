@@ -18,11 +18,10 @@ namespace Nazarova
         {
             
         }
-
+        //Нахождение М средних значений в массиве list 
         public PointPairList meansOfIntervals(PointPairList list, int M)
         {
             PointPairList listOfMeans = new PointPairList();
-            double[] mean = new double[10];
             int N = list.Count();
             int n = N / M;
             double sum = 0;
@@ -38,7 +37,7 @@ namespace Nazarova
             }
             return listOfMeans;
         }
-
+        //Нахождение отклонений в массиве значений на b %
         public String deviations(PointPairList list, double b)
         {
             double max = list.Max(p => p.Y);
@@ -68,7 +67,7 @@ namespace Nazarova
             String result = "Cовпадений: " + k + " из " + c + " = " + perc + " %\nДопустимое отклонение: " + maxDiff + "; \n Отклонения интеравалов: [" + diffStr + "]";
             return result;
         }
-
+        //Комбинации (из теор. вероятности)
         private BigInteger combinations(int n, int k)
         {
             BigInteger factorialN = 1, factorialK = 1, factorialNK = 1;
@@ -78,7 +77,7 @@ namespace Nazarova
             BigInteger f = factorialN / (factorialNK * factorialK);
             return f;
         }
-
+        //дисперсия на М интервалах
         public PointPairList dispOfIntervals(PointPairList list, int M)
         {
             PointPairList listOfDisp = new PointPairList();
@@ -96,7 +95,7 @@ namespace Nazarova
             }
             return listOfDisp;
         }
-
+        //вычисление среднего значения
         public double calcMean(PointPairList list)
         {
             double mean = 0;
@@ -106,7 +105,7 @@ namespace Nazarova
             mean /= N;
             return mean;
         }
-
+        //вычисление дисперсии
         public double calcDisp(PointPairList list)
         {
             double mean = 0, disp = 0;
@@ -118,7 +117,7 @@ namespace Nazarova
             disp = Math.Sqrt(disp);
             return disp;
         }
-
+        //гистограмма М значений
         public PointPairList buildHistogram(PointPairList list, int M)
         {
             int N = list.Count();
@@ -144,6 +143,7 @@ namespace Nazarova
 
             return HList;
         }
+        //корреляция функции
         public PointPairList buildCorrelation(PointPairList list)
         {
             int N = list.Count();
@@ -168,6 +168,7 @@ namespace Nazarova
             }
             return CList;
         }
+        //Взаимнокорреляционная функция
         public PointPairList buildCorrelation(PointPairList list1, PointPairList list2)
         {
             int N = list1.Count();
@@ -195,6 +196,7 @@ namespace Nazarova
             }
             return CList;
         }
+
         private double calcRe(PointPairList list, int m, double N)
         {
             double re = 0;
@@ -214,7 +216,7 @@ namespace Nazarova
             }
             return im / N;
         }
-
+        //построение спектра Фурье, scale - шкала (при значении 2 - показывется только половина всего спекра т.к. он зеркально отражается относит Оу)
         public PointPairList buildSpecter(PointPairList list, double scale)
         {
             int N = list.Count();
@@ -236,7 +238,8 @@ namespace Nazarova
             
             return listSpec2;
         }
-
+        //Построение спектра фурье, df - домножение координат
+        ///scale - шкала (при значении 2 - показывется только половина всего спекра т.к. он зеркально отражается относит Оу)
         public PointPairList buildSpecter(PointPairList list, double scale, double df)
         {
             int N = list.Count();
@@ -259,7 +262,7 @@ namespace Nazarova
             return listSpec2;
         }
 
-        //для обратного преобразования нужен весь спектр, а не половина и без извлечения корня
+        //Спектр Фурье без извлечения корня (для обратного преобразования нужен весь спектр)
         public PointPairList buildSpecter(PointPairList list)
         {
             int N = list.Count();
@@ -366,7 +369,7 @@ namespace Nazarova
             }
             return listX;
         }
-
+        //Построение гистограммы изображения по составляющей R
         public PointPairList imgHistogram (Image img)
         {
             PointPairList list = new PointPairList();
@@ -389,7 +392,49 @@ namespace Nazarova
             }
             return list;
         }
+        //Построение гистограммы изображения, color=0 - Red, color=1 - Green, color=2 - Blue
+        public PointPairList imgHistogram(Image img, int color)
+        {
+            PointPairList list = new PointPairList();
+            Bitmap bit = new Bitmap(img);
+            double size = bit.Width * bit.Height;
+            for (int i = 0; i < 256; i++)
+            {
+                list.Add(i, 0);
+            }
 
+            if (color==0)
+                for (int i = 0; i < bit.Width; i++)
+                {
+                    for (int j = 0; j < bit.Height; j++)
+                    {
+                        list.ElementAt(bit.GetPixel(i, j).R).Y++;
+                    }
+                }
+            else if (color == 1)
+                for (int i = 0; i < bit.Width; i++)
+                {
+                    for (int j = 0; j < bit.Height; j++)
+                    {
+                        list.ElementAt(bit.GetPixel(i, j).G).Y++;
+                    }
+                }
+            
+            else if (color == 2)
+                for (int i = 0; i < bit.Width; i++)
+                {
+                    for (int j = 0; j < bit.Height; j++)
+                    {
+                        list.ElementAt(bit.GetPixel(i, j).B).Y++;
+                    }
+                }
+            for (int i = 0; i < 256; i++)
+            {
+                list.ElementAt(i).Y = list.ElementAt(i).Y / size;
+            }
+            return list;
+        }
+        //Вычисление функции CDF изображения
         public PointPairList imgCDF(Image img)
         {
             PointPairList list = new PointPairList();
